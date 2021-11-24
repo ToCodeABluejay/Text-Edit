@@ -25,8 +25,18 @@
 
 int main(int argc, char *argv[])
 {
-	file_open("LICENSE");
+	struct Window *w = malloc(sizeof(struct Window));
+	struct Cursor *c = malloc(sizeof(struct Cursor));
+	struct File *f = malloc(sizeof(struct File));
+	struct Change *ch = malloc(sizeof(struct Change));
+	
+	initialize_editor();
+	
 	while(1)
- 		initialize_editor();
+ 	{
+ 		print_editor(w);
+ 		refresh();
+ 		clear();
+	}
 }
 
