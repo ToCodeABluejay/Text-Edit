@@ -55,8 +55,9 @@ struct File
 
 struct Change
 {
-	int line;
-	char *text;
+	int line;	//Line of the change
+	char *ot;	//Old text of the line
+	char *nt;	//New text of the line
 	struct Change *prev;
 	struct Change *next;
 };

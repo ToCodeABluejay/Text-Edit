@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 	{
  		print_editor(w);
  		content_line_print(0, w, c);
+ 		move(c->y+1, c->x);
  		getch();
 		refresh();
 		clear();
