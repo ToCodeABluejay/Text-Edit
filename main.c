@@ -25,18 +25,26 @@
 
 int main(int argc, char *argv[])
 {
+	//Initialize all of our core data structures in memory
 	struct Window *w = malloc(sizeof(struct Window));
+	char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
+	w->contents = m;
+	
 	struct Cursor *c = malloc(sizeof(struct Cursor));
+	c->x=0, c->y=0, c->x_rel=0;		//Make sure our cursor is initialized at position (0, 0)
+	
 	struct File *f = malloc(sizeof(struct File));
+	
 	struct Change *ch = malloc(sizeof(struct Change));
 	
 	initialize_editor();
-	
 	while(1)
- 	{
+	{
  		print_editor(w);
- 		refresh();
- 		clear();
+ 		content_line_print(0, w, c);
+ 		getch();
+		refresh();
+		clear();
 	}
 }
 

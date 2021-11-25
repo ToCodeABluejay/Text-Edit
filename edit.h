@@ -1,3 +1,25 @@
+/* "edit.h" - Gabriel Bauer (@ToCodeABluejay)
+ * 
+ *Copyright (c) 2021 Gabriel Bauer (@ToCodeABluejay)
+ *
+ *Permission is hereby granted, free of charge, to any person obtaining a copy
+ *of this software and associated documentation files (the "Software"), to deal
+ *in the Software without restriction, including without limitation the rights
+ *to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *copies of the Software, and to permit persons to whom the Software is
+ *furnished to do so, subject to the following conditions:
+ *
+ *The above copyright notice and this permission notice shall be included in all
+ *copies or substantial portions of the Software.
+ *
+ *THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *SOFTWARE.
+ */
 #ifndef EDIT_H
 #define EDIT_H
 
@@ -5,10 +27,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
-
-//Define minimum width and height
-#define MIN_WIDTH	40
-#define MIN_HEIGHT	80
 
 //Define color schemes
 #define EDITOR_SCHEME	1
@@ -24,14 +42,14 @@ struct Window
 struct Cursor
 {
 	int x, y;
+	int x_rel; //To indicate how x lies relative to the window
 };
 
 struct File
 {
 	char *filename;
-	FILE fp;
+	FILE *fp;
 	char *contents;
-	bool open;
 	bool ro;
 };
 
@@ -45,8 +63,11 @@ struct Change
 
 //Define our functions
 void initialize_editor();							//Initialize NCurses and color mode
-void print_editor(struct Window *w);						//Prints the editor sans file contents
-void print_contents(struct Window *w, struct Cursor *c, struct File *f);	//Prints the inner contents of the editor
-void line_print(int r, char *t, struct Window *w);				//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
+void border_line_print(int, char *, struct Window *);			//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
+void content_line_print(int, struct Window *, struct Cursor *);	//Print line at row "r" with text "t", with restrictions and contents of Window "w", using cursor position x,y
+void print_editor(struct Window *);						//Prints the editor sans file contents
+void print_contents(struct Window *, struct Cursor *, struct File *);	//Prints the inner contents of the editor
+int get_line_number_pos(int, char *);					//Gets the position of the line number 'line' in text 'text'
+int get_end_of_line(int, char *);
 
 #endif /* EDIT_H */
