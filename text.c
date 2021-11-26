@@ -48,8 +48,3 @@ int get_end_of_line(int start, char *text)
 	return i;
 }
 
-/*int get_relative_start(struct Cursor *c)
-{
-	return c->x - c->x_rel;
-}*/
-
