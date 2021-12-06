@@ -42,7 +42,6 @@ struct Window
 struct Cursor
 {
 	int x, y;
-	int x_rel; //To indicate how x lies relative to the window
 };
 
 struct File
