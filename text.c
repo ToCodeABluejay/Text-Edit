@@ -30,9 +30,11 @@ int get_line_number_pos(int line, char *text)
 		return 0;
 	else
 	{
-		for(i=0, j=0; text[i]!='\0'; i++)
+		for(i=0, j=0; ; i++)
 		{
-			if (text[i]=='\n' && j==line)
+            if (text[i]!='\0')
+                return EOF;
+			else if (text[i]=='\n' && j==line)
 				break;
 			else if (text[i]=='\n')
 				j++;

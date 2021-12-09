@@ -24,9 +24,10 @@
 #define EDIT_H
 
 //Include necessary headers and libraries for the application
-#include <ncurses.h>
+#include <curses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 //Define color schemes
 #define EDITOR_SCHEME	1
