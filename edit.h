@@ -27,7 +27,6 @@
 #include <curses.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 //Define color schemes
 #define EDITOR_SCHEME	1

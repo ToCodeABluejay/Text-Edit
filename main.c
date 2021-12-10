@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
 	struct Window *w = malloc(sizeof(struct Window));
 	char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
 	w->contents = m;
-    w->top = 0;
+	w->top = 0;
 	
 	struct Cursor *c = malloc(sizeof(struct Cursor));
-	c->x=0, c->y=0;		//Make sure our cursor is initialized at position (0, 0)
+	c->x=40, c->y=0;		//Make sure our cursor is initialized at position (0, 0)
 	
 	struct File *f = malloc(sizeof(struct File));
 	
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	while(1)
 	{
  		print_editor(w);
- 		content_line_print(0, w, c);
+ 		print_contents(w, c, f);
  		move(c->y+1, c->x);
  		getch();
 		refresh();

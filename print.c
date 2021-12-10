@@ -52,19 +52,14 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 {
 	long i = 0, j;
 	
-	//TODO: Current line print function
-	/*if (r==c->y)
-		current_line_print();*/
-	
 	attrset(COLOR_PAIR(EDITOR_SCHEME));		//Turn on attribute for the boundary color scheme
 	move(r+1, 0);					//Set cursor to the beginning of the line for the y-position "row" -- all being relative to editor bounds
 
-    if (r==c->y)
-        j = (long) floor(c->x/w->width);
-    else
-        j = get_line_number_pos(r, w->contents);
+	j = get_line_number_pos(r, w->contents);
+	if (r==c->y)
+		j += (long) c->x-(c->x%w->width);
 	
-	for (; i < w->width-1 && i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
+	for (i,j; i < w->width-1 && j+i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
 	{
 		addch(w->contents[j+i]);
 	}
@@ -87,11 +82,11 @@ void print_editor(struct Window *w)
 void print_contents(struct Window *w, struct Cursor *c, struct File *f)
 {
     int i=0, pos = get_line_number_pos(w->top, w->contents);
-    while (i<w->height-2)
+    while (pos<w->height-2)
     {
         content_line_print(pos, w, c);
         pos++;
     }
-    move(c->y-w->top, c->x%w->width);
+    move(c->y-w->top+1, c->x%w->width);
 }
 
