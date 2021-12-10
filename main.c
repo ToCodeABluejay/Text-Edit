@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
 {
 	//Initialize all of our core data structures in memory
 	struct Window *w = malloc(sizeof(struct Window));
-	char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
+	char m[61] = "Hello, world!!\n The quick brown fox jumps over the lazy dog!";
 	w->contents = m;
 	w->top = 0;
 	
 	struct Cursor *c = malloc(sizeof(struct Cursor));
-	c->x=40, c->y=0;		//Make sure our cursor is initialized at position (0, 0)
+	c->x=15, c->y=1;		//Make sure our cursor is initialized at position (0, 0)
 	
 	struct File *f = malloc(sizeof(struct File));
 	
