@@ -34,6 +34,7 @@ void initialize_editor()	//Initialize NCurses
 	start_color();						//Otherwise, carry on wayward, initialize color and print the outline to the editor
 	init_pair(EDITOR_SCHEME, COLOR_BLACK, COLOR_WHITE);	//Initialize color pair of black text on a white background (for editor)
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
+	keypad(stdscr, TRUE);
 }
 
 void border_line_print(int r, char *t, struct Window *w)	//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"

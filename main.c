@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
  		print_editor(w);
  		print_contents(w, c, f);
  		move(c->y+1, c->x);
- 		getch();
+ 		get_input(w, c);
 		refresh();
 		clear();
 	}
