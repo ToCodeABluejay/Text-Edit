@@ -111,6 +111,8 @@ void get_input(struct Window *w, struct Cursor *c)
 			break;
 		case KEY_F(5):
 			break;
+		case KEY_RESIZE:
+			break;
 		default:
 			ins_char(c->abs, (char) k, w->contents);
 			c->x++; c->abs++;
