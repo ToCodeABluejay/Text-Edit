@@ -22,14 +22,21 @@
  */
 #include "edit.h"
 
+void repos_x(struct Window *w, struct Cursor *c)
+{
+	int max, pos=get_line_number_pos(c->y, w->contents);
+	max=get_end_of_line(pos, w->contents)-pos;
+	if (c->x>max)
+		c->x=max;
+}
+
 void key_up(struct Window *w, struct Cursor *c)
 {
 	if (c->y>0)
 	{
 		c->y--;
-		if (get_end_of_line(c->y, w->contents)<get_line_number_pos(c->y, w->contents)+c->x)
-			c->x=get_end_of_line(c->y, w->contents)-get_line_number_pos(c->y, w->contents);
-	 }
+		repos_x(w, c);
+	}
 	else
 		beep();
 }
@@ -39,8 +46,7 @@ void key_down(struct Window *w, struct Cursor *c)
 	if (get_line_number_pos(c->y+1, w->contents)!=EOF)
 	{
 		c->y++;
-		if (get_end_of_line(c->y, w->contents)<get_line_number_pos(c->y, w->contents)+c->x)
-			c->x=get_end_of_line(c->y, w->contents)-get_line_number_pos(c->y, w->contents);
+		repos_x(w, c);
 	}
 	else
 		beep();
