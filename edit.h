@@ -27,6 +27,7 @@
 #include <curses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 //Define color schemes
 #define EDITOR_SCHEME	1
@@ -41,7 +42,7 @@ struct Window
 
 struct Cursor
 {
-	int x, y;
+	int x, y, abs;
 };
 
 struct File
@@ -70,5 +71,6 @@ void print_contents(struct Window *, struct Cursor *, struct File *);	//Prints t
 int get_line_number_pos(int, char *);					//Gets the position of the line number 'line' in text 'text'
 int get_end_of_line(int, char *);
 void get_input(struct Window *, struct Cursor *);
+void ins_char(int, char, char *);
 
 #endif /* EDIT_H */

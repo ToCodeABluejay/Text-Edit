@@ -51,3 +51,26 @@ int get_end_of_line(int start, char *text)
 	return i;
 }
 
+int array_size(char *k)
+{
+	int len = floor(log(strlen(k))/log(2));
+	return pow(2,len+1);
+}
+
+void ins_char(int pos, char k, char *str)
+{
+	if(strlen(str)==array_size(str))
+	{
+		char *resize = (char*) malloc(strlen(str));
+		strcpy(resize, str);
+		str = realloc(str,array_size(str)*2);
+		strcpy(str, resize);
+	}
+	char *cpy = (char*) malloc(array_size(str));
+	strncpy(cpy, str, pos);
+	cpy[pos] = k;
+	strcat(cpy, str+pos);
+	strcpy(str, cpy);
+	
+}
+

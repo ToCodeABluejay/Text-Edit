@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	w->top = 0;
 	
 	struct Cursor *c = malloc(sizeof(struct Cursor));
-	c->x=15, c->y=1;		//Make sure our cursor is initialized at position (0, 0)
+	c->x=15, c->y=1; c->abs=30;		//Make sure our cursor is initialized at position (0, 0)
 	
 	struct File *f = malloc(sizeof(struct File));
 	

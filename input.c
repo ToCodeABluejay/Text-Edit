@@ -28,6 +28,7 @@ void repos_x(struct Window *w, struct Cursor *c)
 	max=get_end_of_line(pos, w->contents)-pos;
 	if (c->x>max)
 		c->x=max;
+	c->abs=pos+max;
 }
 
 void key_up(struct Window *w, struct Cursor *c)
@@ -57,10 +58,13 @@ void key_right(struct Window *w, struct Cursor *c)
 	int i = get_line_number_pos(c->y, w->contents);
 	i += c->x;
 	if (w->contents[i+1]!='\n'&&w->contents[i+1]!='\0')
-		c->x++;
+	{
+		c->x++; c->abs++;
+	}
 	else if (w->contents[i+1]=='\n')
 	{
 		c->x=0; c->y++;
+		c->abs=get_line_number_pos(c->y, w->contents);
 	}
 	else
 		beep();
@@ -69,20 +73,21 @@ void key_right(struct Window *w, struct Cursor *c)
 void key_left(struct Window *w, struct Cursor *c)
 {
 	int i = get_line_number_pos(c->y, w->contents);
-		i += c->x;
+	i += c->x;
 	if (w->contents[i-1]!='\n'&&w->contents[i-1])
-		c->x--;
-	else if (w->contents[i-1]=='\n')
 	{
-		c->x=get_end_of_line(get_line_number_pos(c->y-1, w->contents), w->contents); c->y--;
+		c->x--; c->abs--;
 	}
+	else if (w->contents[i-1]=='\n')
+		key_up(w, c);
 	else if (!w->contents[i-1])
 		beep();
 }
 
 void get_input(struct Window *w, struct Cursor *c)
 {
-	switch(getch())
+	int k;
+	switch(k = getch())
 	{
 		case KEY_UP:
 			key_up(w, c);
@@ -107,6 +112,8 @@ void get_input(struct Window *w, struct Cursor *c)
 		case KEY_F(5):
 			break;
 		default:
+			ins_char(c->abs, (char) k, w->contents);
+			c->x++; c->abs++;
 			break;
 	}
 }
