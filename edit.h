@@ -75,5 +75,6 @@ int get_end_of_line(int, char *);
 void get_input(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 int open_dialog(struct Window *, struct Cursor *, struct File *);
+bool dialog_input();
 
 #endif /* EDIT_H */

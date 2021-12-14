@@ -22,7 +22,7 @@
  */
 #include "edit.h"
 
-void not_saved(struct Window *w)
+bool not_saved(struct Window *w)
 {
 	while (true)
 	{
@@ -30,24 +30,32 @@ void not_saved(struct Window *w)
 		move(0,0);
 		for(int i=0; i<=w->height*w->width; i++) addch(' ');
 		move(floor(w->height/2),0);
-		printw("File not saved!");
+		printw("File not saved! Do you want to continue?");
 		move(floor(w->height/2)+1,0);
-		printw("Press any key to continue, and then escape to return to editor.");
+		printw("Press enter to continue and backspace to cancel.");
 		refresh();
-		if (getch())
-			break;
+		switch (getch())
+		{
+			case '\n':
+				return true;
+				break;
+			case '\b':
+				return false;
+				break;
+		}
 	}
 }
 
 int open_dialog(struct Window *w, struct Cursor *c, struct File *f)
 {
+	bool isdial = true;
 	/*if (!f->saved)	<-- remove comment when implementation ready
-		not_saved(w);*/
-	while (true)
+		isdial = not_saved(w);*/
+	while (isdial)
 	{
 		border_line_print(w->height-1, "File path:", w);
 		move(w->height-1, 10);
-		getch();
+		isdial = dialog_input();
 		refresh();
 	}
 }

@@ -122,3 +122,18 @@ void get_input(struct Window *w, struct Cursor *c)
 			break;
 	}
 }
+
+bool dialog_input()
+{
+	int k;
+	switch(k = getch())
+	{
+		case '\n':
+			return false;
+			break;
+		case KEY_RESIZE:
+			break;
+		default:
+			break;
+	}
+}
