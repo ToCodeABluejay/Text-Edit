@@ -1,5 +1,5 @@
-/* "main.c" - Gabriel Bauer (@ToCodeABluejay)
- * 
+/* "file.c" - Gabriel Bauer (@ToCodeABluejay)
+ *
  *Copyright (c) 2021 Gabriel Bauer (@ToCodeABluejay)
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,34 +20,34 @@
  *OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *SOFTWARE.
  */
-
 #include "edit.h"
 
-int main(int argc, char *argv[])
+void not_saved(struct Window *w)
 {
-	//Initialize all of our core data structures in memory
-	struct Window *w = malloc(sizeof(struct Window));
-	char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
-	w->contents = m;
-	w->top = 0;
-	
-	struct Cursor *c = malloc(sizeof(struct Cursor));
-	c->x=30, c->y=0; c->abs=30;		//Make sure our cursor is initialized at position (0, 0)
-	
-	struct File *f = malloc(sizeof(struct File));
-	
-	struct Change *ch = malloc(sizeof(struct Change));
-	
-	initialize_editor();
-	while(1)
+	while (true)
 	{
- 		print_editor(w);
- 		print_contents(w, c, f);
- 		move(c->y+1, c->x);
- 		//open(w, c, f);
- 		get_input(w, c);
+		attrset(COLOR_PAIR(BOUNDARY_SCHEME));
+		move(0,0);
+		for(int i=0; i<=w->height*w->width; i++) addch(' ');
+		move(floor(w->height/2),0);
+		printw("File not saved!");
+		move(floor(w->height/2)+1,0);
+		printw("Press any key to continue, and then escape to return to editor.");
 		refresh();
-		clear();
+		if (getch())
+			break;
 	}
 }
 
+int open_dialog(struct Window *w, struct Cursor *c, struct File *f)
+{
+	/*if (!f->saved)	<-- remove comment when implementation ready
+		not_saved(w);*/
+	while (true)
+	{
+		border_line_print(w->height-1, "File path:", w);
+		move(w->height-1, 10);
+		getch();
+		refresh();
+	}
+}

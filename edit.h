@@ -26,6 +26,7 @@
 //Include necessary headers and libraries for the application
 #include <curses.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -51,6 +52,7 @@ struct File
 	FILE *fp;
 	char *contents;
 	bool ro;
+	bool saved;
 };
 
 struct Change
@@ -72,5 +74,6 @@ int get_line_number_pos(int, char *);					//Gets the position of the line number
 int get_end_of_line(int, char *);
 void get_input(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
+int open_dialog(struct Window *, struct Cursor *, struct File *);
 
 #endif /* EDIT_H */

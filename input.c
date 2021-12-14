@@ -113,6 +113,9 @@ void get_input(struct Window *w, struct Cursor *c)
 			break;
 		case KEY_RESIZE:
 			break;
+		case '\n':
+			open_dialog(w,c, NULL);
+			break;
 		default:
 			ins_char(c->abs, (char) k, w->contents);
 			c->x++; c->abs++;
