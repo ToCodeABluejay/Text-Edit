@@ -114,7 +114,7 @@ void not_saved(struct Window *w)
 	}
 }
 
-int open_dialog(struct Window *w, struct Cursor *c, struct File *f)
+void open_dialog(struct Window *w, struct Cursor *c, struct File *f)
 {
 	/*if (!f)//->saved)	<-- remove comment when implementation ready
 		not_saved(w);*/

@@ -51,22 +51,22 @@ int get_end_of_line(int start, char *text)
 	return i;
 }
 
-int array_size(char *k)
+unsigned long long array_size(int k)
 {
-	int len = floor(log(strlen(k))/log(2));
+	int len = (unsigned)floor(log(k)/log(2));
 	return pow(2,len+1);
 }
 
 void ins_char(int pos, char k, char *str)
 {
-	if(strlen(str)==array_size(str))
+	if(strlen(str)==array_size(strlen(str)))
 	{
 		char *resize = (char*) malloc(strlen(str));
 		strcpy(resize, str);
-		str = realloc(str,array_size(str)*2);
+		str = realloc(str,array_size(strlen(str))*2);
 		strcpy(str, resize);
 	}
-	char *cpy = (char*) malloc(array_size(str));
+	char *cpy = (char*) malloc(array_size(strlen(str)));
 	strncpy(cpy, str, pos);
 	cpy[pos] = k;
 	strcat(cpy, str+pos);

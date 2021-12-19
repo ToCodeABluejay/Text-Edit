@@ -81,8 +81,10 @@ int get_line_number_pos(int, char *);					//Gets the position of the line number
 int get_end_of_line(int, char *);
 void get_input(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
-int open_dialog(struct Window *, struct Cursor *, struct File *);
+void open_dialog(struct Window *, struct Cursor *, struct File *);
 void not_saved(struct Window *);
 void dialog_input(struct File *);
+void open(struct Window *, struct File *);
+unsigned long long array_size(int);
 
 #endif /* EDIT_H */

@@ -85,7 +85,7 @@ void key_left(struct Window *w, struct Cursor *c)
 }
 
 void get_input(struct Window *w, struct Cursor *c)
-{	
+{
 	int k;
 	switch(k = getch())
 	{
@@ -106,7 +106,7 @@ void get_input(struct Window *w, struct Cursor *c)
 		case KEY_F(2):
 			break;
 		case KEY_F(3):
-			open_dialog(w,c, NULL);
+			mode=OPEN_FILE;
 			break;
 		case KEY_F(4):
 			break;
