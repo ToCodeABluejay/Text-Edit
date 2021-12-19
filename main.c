@@ -23,6 +23,9 @@
 
 #include "edit.h"
 
+bool isdial;
+int mode=EDIT_MODE;
+
 int main(int argc, char *argv[])
 {
 	//Initialize all of our core data structures in memory
@@ -41,11 +44,23 @@ int main(int argc, char *argv[])
 	initialize_editor();
 	while(1)
 	{
- 		print_editor(w);
- 		print_contents(w, c, f);
- 		move(c->y+1, c->x);
- 		//open(w, c, f);
- 		get_input(w, c);
+		cbreak();
+		curs_set(1);
+		
+		print_editor(w);
+		switch (mode)
+		{
+			case EDIT_MODE:
+				print_contents(w, c, f);
+				get_input(w, c);
+				break;
+			case NOT_SAVED:
+				not_saved(w);
+				break;
+			case OPEN_FILE:
+				open_dialog(w, c, f);
+				break;
+		}
 		refresh();
 		clear();
 	}

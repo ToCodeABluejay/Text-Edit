@@ -71,6 +71,5 @@ void ins_char(int pos, char k, char *str)
 	cpy[pos] = k;
 	strcat(cpy, str+pos);
 	strcpy(str, cpy);
-	
 }
 

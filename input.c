@@ -85,7 +85,7 @@ void key_left(struct Window *w, struct Cursor *c)
 }
 
 void get_input(struct Window *w, struct Cursor *c)
-{
+{	
 	int k;
 	switch(k = getch())
 	{
@@ -106,15 +106,13 @@ void get_input(struct Window *w, struct Cursor *c)
 		case KEY_F(2):
 			break;
 		case KEY_F(3):
+			open_dialog(w,c, NULL);
 			break;
 		case KEY_F(4):
 			break;
 		case KEY_F(5):
 			break;
 		case KEY_RESIZE:
-			break;
-		case '\n':
-			open_dialog(w,c, NULL);
 			break;
 		default:
 			ins_char(c->abs, (char) k, w->contents);
@@ -123,17 +121,27 @@ void get_input(struct Window *w, struct Cursor *c)
 	}
 }
 
-bool dialog_input()
-{
+void dialog_input(struct File *f)
+{	
+	static char path[PATH_MAX];
+	static int i=0;
 	int k;
+	
+	printw(path);
 	switch(k = getch())
 	{
 		case '\n':
-			return false;
+			strcpy(f->path, path);
+			mode=EDIT_MODE;
 			break;
+		case KEY_BACKSPACE:
+			i--;
+			path[i]='\0';
 		case KEY_RESIZE:
 			break;
 		default:
+			path[i] = (char) k;
+			i++;
 			break;
 	}
 }

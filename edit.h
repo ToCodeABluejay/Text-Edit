@@ -29,10 +29,15 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <limits.h>
 
 //Define color schemes
 #define EDITOR_SCHEME	1
 #define BOUNDARY_SCHEME	2
+
+#define EDIT_MODE	0
+#define NOT_SAVED	1
+#define OPEN_FILE	2
 
 //Define our data-structures
 struct Window
@@ -48,7 +53,7 @@ struct Cursor
 
 struct File
 {
-	char *filename;
+	char path[PATH_MAX];
 	FILE *fp;
 	char *contents;
 	bool ro;
@@ -64,6 +69,8 @@ struct Change
 	struct Change *next;
 };
 
+extern int mode;
+
 //Define our functions
 void initialize_editor();							//Initialize NCurses and color mode
 void border_line_print(int, char *, struct Window *);			//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
@@ -75,6 +82,7 @@ int get_end_of_line(int, char *);
 void get_input(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 int open_dialog(struct Window *, struct Cursor *, struct File *);
-bool dialog_input();
+void not_saved(struct Window *);
+void dialog_input(struct File *);
 
 #endif /* EDIT_H */

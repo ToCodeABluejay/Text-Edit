@@ -35,7 +35,9 @@ void initialize_editor()	//Initialize NCurses
 	init_pair(EDITOR_SCHEME, COLOR_BLACK, COLOR_WHITE);	//Initialize color pair of black text on a white background (for editor)
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
 	keypad(stdscr, TRUE);
-	nocbreak();
+	noecho();
+	//notimeout(stdscr, FALSE);
+	//nonl();
 }
 
 void border_line_print(int r, char *t, struct Window *w)	//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
@@ -59,7 +61,7 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 
 	j = get_line_number_pos(r, w->contents);
 	if (r==c->y)
-		j += (long) c->x-(c->x%w->width);
+		j += (long) c->x-(c->x%w->width)-floor(c->x/w->width);
 	
 	for (i,j; i < w->width-1 && j+i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
 	{
@@ -90,5 +92,35 @@ void print_contents(struct Window *w, struct Cursor *c, struct File *f)
         pos++;
     }
     move(c->y-w->top+1, c->x%w->width);
+}
+
+void not_saved(struct Window *w)
+{
+	attrset(COLOR_PAIR(BOUNDARY_SCHEME));
+	move(0,0);
+	for(int i=0; i<=w->height*w->width; i++) addch(' ');
+	move(floor(w->height/2),0);
+	printw("File not saved! Do you want to continue?");
+	move(floor(w->height/2)+1,0);
+	printw("Press enter to continue and backspace to cancel.");
+	switch (getch())
+	{
+		case '\n':
+			mode=OPEN_FILE;
+			break;
+		case KEY_BACKSPACE:
+			mode=EDIT_MODE;
+			break;
+	}
+}
+
+int open_dialog(struct Window *w, struct Cursor *c, struct File *f)
+{
+	/*if (!f)//->saved)	<-- remove comment when implementation ready
+		not_saved(w);*/
+	print_editor(w);
+	border_line_print(w->height-1, "File path:", w);
+	move(w->height-1, 10);
+	dialog_input(f);
 }
 
