@@ -121,7 +121,7 @@ void get_input(struct Window *w, struct Cursor *c)
 	}
 }
 
-void dialog_input(struct File *f)
+void dialog_input(struct Window *w, struct File *f)
 {	
 	static char path[PATH_MAX];
 	static int i=0;
@@ -132,6 +132,7 @@ void dialog_input(struct File *f)
 	{
 		case '\n':
 			strcpy(f->path, path);
+			open(w,f);
 			mode=EDIT_MODE;
 			break;
 		case KEY_BACKSPACE:

@@ -25,15 +25,12 @@
 void open(struct Window *w, struct File *f)
 {
 	f->fp = fopen(f->path, "r");
-	fseek(f->fp, 0L, SEEK_END);
+	fseek(f->fp, 0, SEEK_END);
 	unsigned long long size = array_size(ftell(f->fp));
 	
-	if (!w->contents)
-		w->contents = malloc(size*sizeof(char));
-	else
-		w->contents = realloc(w->contents, size*sizeof(char));
+	w->contents = realloc(w->contents, size*sizeof(char));
 	rewind(f->fp);
 	
-	fgets(w->contents, size, f->fp);
+	fread(w->contents, size, 1, f->fp);
 	fclose(f->fp);
 }

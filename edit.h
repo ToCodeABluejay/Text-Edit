@@ -83,7 +83,7 @@ void get_input(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 void open_dialog(struct Window *, struct Cursor *, struct File *);
 void not_saved(struct Window *);
-void dialog_input(struct File *);
+void dialog_input(struct Window *, struct File *);
 void open(struct Window *, struct File *);
 unsigned long long array_size(int);
 

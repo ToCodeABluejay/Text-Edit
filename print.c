@@ -121,6 +121,6 @@ void open_dialog(struct Window *w, struct Cursor *c, struct File *f)
 	print_editor(w);
 	border_line_print(w->height-1, "File path:", w);
 	move(w->height-1, 10);
-	dialog_input(f);
+	dialog_input(w, f);
 }
 
