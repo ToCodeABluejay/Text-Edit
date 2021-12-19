@@ -23,7 +23,6 @@
 
 #include "edit.h"
 
-bool isdial;
 int mode=EDIT_MODE;
 
 int main(int argc, char *argv[])
