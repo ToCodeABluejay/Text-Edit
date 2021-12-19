@@ -30,6 +30,7 @@
 #include <string.h>
 #include <math.h>
 #include <limits.h>
+#include <sys/stat.h>
 
 //Define color schemes
 #define EDITOR_SCHEME	1
@@ -54,8 +55,8 @@ struct Cursor
 struct File
 {
 	char path[PATH_MAX];
+	char filename[NAME_MAX];
 	FILE *fp;
-	char *contents;
 	bool ro;
 	bool saved;
 };

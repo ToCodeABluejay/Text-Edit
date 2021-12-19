@@ -23,6 +23,9 @@
 #include "edit.h"
 
 void repos_x(struct Window *w, struct Cursor *c)
+/*When the cursor's x-position is greater than the
+ *length of the given line, move the cursor back
+ *to the end of the given line*/
 {
 	int max, pos=get_line_number_pos(c->y, w->contents);
 	max=get_end_of_line(pos, w->contents)-pos;
@@ -32,6 +35,8 @@ void repos_x(struct Window *w, struct Cursor *c)
 }
 
 void key_up(struct Window *w, struct Cursor *c)
+/*When in edit-mode and the up arrow key is pressed,
+ *do this*/
 {
 	if (c->y>0)
 	{
@@ -43,6 +48,8 @@ void key_up(struct Window *w, struct Cursor *c)
 }
 
 void key_down(struct Window *w, struct Cursor *c)
+/*When in edit-mode and the down arrow key is pressed,
+ *do this*/
 {
 	if (get_line_number_pos(c->y+1, w->contents)!=EOF)
 	{
@@ -54,6 +61,8 @@ void key_down(struct Window *w, struct Cursor *c)
 }
 
 void key_right(struct Window *w, struct Cursor *c)
+/*When in edit-mode and the right arrow key is pressed,
+ *do this*/
 {
 	int i = get_line_number_pos(c->y, w->contents);
 	i += c->x;
@@ -71,6 +80,8 @@ void key_right(struct Window *w, struct Cursor *c)
 }
 
 void key_left(struct Window *w, struct Cursor *c)
+/*When in edit-mode and the left arrow key is pressed,
+ *do this*/
 {
 	int i = get_line_number_pos(c->y, w->contents);
 	i += c->x;
@@ -79,12 +90,20 @@ void key_left(struct Window *w, struct Cursor *c)
 		c->x--; c->abs--;
 	}
 	else if (w->contents[i-1]=='\n')
-		key_up(w, c);
+	{
+		c->y--;
+		int max, pos=get_line_number_pos(c->y, w->contents);
+		max=get_end_of_line(pos, w->contents)-pos;
+		c->x=max;
+		c->abs=pos+max;
+	}
 	else if (!w->contents[i-1])
 		beep();
 }
 
 void get_input(struct Window *w, struct Cursor *c)
+/*When in edit-mode and getting user input,
+ *do this*/
 {
 	int k;
 	switch(k = getch())
@@ -122,26 +141,24 @@ void get_input(struct Window *w, struct Cursor *c)
 }
 
 void dialog_input(struct Window *w, struct File *f)
-{	
-	static char path[PATH_MAX];
+{
 	static int i=0;
 	int k;
 	
-	printw(path);
+	printw(f->path);
 	switch(k = getch())
 	{
 		case '\n':
-			strcpy(f->path, path);
 			open(w,f);
 			mode=EDIT_MODE;
 			break;
 		case KEY_BACKSPACE:
 			i--;
-			path[i]='\0';
+			f->path[i]='\0';
 		case KEY_RESIZE:
 			break;
 		default:
-			path[i] = (char) k;
+			f->path[i] = (char) k;
 			i++;
 			break;
 	}

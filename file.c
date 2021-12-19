@@ -23,11 +23,21 @@
 #include "edit.h"
 
 void open(struct Window *w, struct File *f)
+/*Opens a file, copies the contents, and
+ *assesses file permissions*/
 {
+	struct stat f_stat;
 	f->fp = fopen(f->path, "r");
 	
 	if (f->fp)
 	{
+		stat(f->path, &f_stat);
+		
+		if (f_stat.st_mode!=S_IWUSR)
+			f->ro=false;
+		else
+			f->ro=true;
+		
 		fseek(f->fp, 0L, SEEK_END);
 		unsigned long long size = array_size(ftell(f->fp));
 		
