@@ -99,3 +99,10 @@ void del_char(struct Window *w, struct Cursor *c)
 	for(int pos=c->abs;w->contents[pos]!='\0'; pos++) w->contents[pos]=w->contents[pos+1];
 }
 
+void del_line(int line, char *text)
+{
+	int start = get_line_number_pos(line, text);
+	int diff = get_end_of_line(start, text)-start+1;
+	for(;text[start]!='\0'; start++) text[start]=text[start+diff];
+}
+

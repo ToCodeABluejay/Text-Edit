@@ -141,6 +141,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 				mode=NOT_SAVED;
 			break;
 		case KEY_F(5):
+			mode=DEL_LINE;
 			break;
 		case KEY_BACKSPACE:
 			del_char(w, c);
@@ -162,7 +163,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 
 int dialog_input(struct Window *w, char *str)
 {
-	static int i=0;
+	int i=strlen(str);
 	int k;
 	
 	printw(str);

@@ -23,8 +23,8 @@
 
 #include "edit.h"
 
-int mode=EDIT_MODE;
-int svdmd;
+int mode=EDIT_MODE, svdmd;
+char ln[NAME_MAX]="";
 
 int main(int argc, char *argv[])
 {
@@ -81,6 +81,14 @@ int main(int argc, char *argv[])
 						f->ro=false;
 						fclose(f->fp);
 					}
+					mode=EDIT_MODE;
+				}
+				break;
+			case DEL_LINE:
+				dialog(w, "Line number:");
+				if(!dialog_input(w,ln))
+				{
+					del_line(atoi(ln)-1, w->contents);
 					mode=EDIT_MODE;
 				}
 				break;

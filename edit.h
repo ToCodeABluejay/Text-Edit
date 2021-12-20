@@ -40,6 +40,7 @@
 #define NOT_SAVED	1
 #define OPEN_FILE	2
 #define NEW_FILE	3
+#define DEL_LINE	4
 
 //Define our data-structures
 struct Window
@@ -86,6 +87,7 @@ void get_input(struct Window *, struct Cursor *, struct File *);
 void key_left(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 void del_char(struct Window *, struct Cursor *);
+void del_line(int, char *);
 void dialog(struct Window *, char *);
 bool msg_box(struct Window *w, char *msg);
 int dialog_input(struct Window *, char *);
