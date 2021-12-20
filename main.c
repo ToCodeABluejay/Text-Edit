@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 					mode=EDIT_MODE;
 				break;
 			case OPEN_FILE:
-				file_dialog(w, c, f);
+				dialog(w, "File path:");
 				if(!dialog_input(w,f->path))
 				{
 					open(w,f);
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case NEW_FILE:
-				file_dialog(w, c, f);
+				dialog(w, "File path:");
 				if(!dialog_input(w,f->path))
 				{
 					new(w,f,c);

@@ -115,10 +115,10 @@ bool msg_box(struct Window *w, char *msg)
 	}
 }
 
-void file_dialog(struct Window *w, struct Cursor *c, struct File *f)
+void dialog(struct Window *w, char *prompt)
 {
 	print_editor(w);
-	border_line_print(w->height-1, "File path:", w);
-	move(w->height-1, 10);
+	border_line_print(w->height-1, prompt, w);
+	move(w->height-1, strlen(prompt));
 }
 
