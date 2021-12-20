@@ -26,7 +26,7 @@ void initialize_editor()
 //Initialize curses
 {
 	initscr();						//Initialize screen and curses mode
-	if (has_colors() == FALSE)				//Check to see if the console supports colored print, if not, then execute the following segment
+	if (!has_colors())				//Check to see if the console supports colored print, if not, then execute the following segment
 	{
 		endwin();									//Un-initialize the window
 		fprintf(stderr, "ERROR: This console does not support colored printing\n");	//Provide an error message
@@ -35,7 +35,7 @@ void initialize_editor()
 	start_color();						//Otherwise, carry on wayward, initialize color and print the outline to the editor
 	init_pair(EDITOR_SCHEME, COLOR_BLACK, COLOR_WHITE);	//Initialize color pair of black text on a white background (for editor)
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
-	keypad(stdscr, TRUE);
+	keypad(stdscr, true);
 	cbreak();
 	curs_set(1);
 }
