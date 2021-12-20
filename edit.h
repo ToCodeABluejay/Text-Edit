@@ -85,7 +85,7 @@ void key_left(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 void del_char(struct Window *, struct Cursor *);
 void open_dialog(struct Window *, struct Cursor *, struct File *);
-void not_saved(struct Window *);
+bool msg_box(struct Window *w, char *msg);
 void dialog_input(struct Window *, struct File *);
 void open(struct Window *, struct File *);
 void save(struct Window *, struct File *);

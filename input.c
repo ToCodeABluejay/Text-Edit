@@ -130,7 +130,10 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			save(w, f);
 			break;
 		case KEY_F(3):
-			mode=OPEN_FILE;
+			if (f->saved)
+				mode=OPEN_FILE;
+			else
+				mode=NOT_SAVED;
 			break;
 		case KEY_F(4):
 			break;
@@ -138,6 +141,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			break;
 		case KEY_BACKSPACE:
 			del_char(w, c);
+			f->saved=false;
 			break;
 		case KEY_RESIZE:
 			break;
@@ -148,6 +152,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 				c->x++;
 			else
 				c->y++;
+			f->saved=false;
 			break;
 	}
 }

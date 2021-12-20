@@ -57,6 +57,7 @@ void save(struct Window *w, struct File *f)
 	{
 		fputs(w->contents, f->fp);
 		fclose(f->fp);
+		f->saved=true;
 	}
 }
 

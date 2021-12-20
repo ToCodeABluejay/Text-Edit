@@ -94,30 +94,28 @@ void print_contents(struct Window *w, struct Cursor *c, struct File *f)
     move(c->y-w->top+1, c->x%w->width);
 }
 
-void not_saved(struct Window *w)
+bool msg_box(struct Window *w, char *msg)
 {
 	attrset(COLOR_PAIR(BOUNDARY_SCHEME));
 	move(0,0);
 	for(int i=0; i<=w->height*w->width; i++) addch(' ');
 	move(floor(w->height/2),0);
-	printw("File not saved! Do you want to continue?");
+	printw(msg);
 	move(floor(w->height/2)+1,0);
 	printw("Press enter to continue and backspace to cancel.");
 	switch (getch())
 	{
 		case '\n':
-			mode=OPEN_FILE;
+			return true;
 			break;
 		case KEY_BACKSPACE:
-			mode=EDIT_MODE;
+			return false;
 			break;
 	}
 }
 
 void open_dialog(struct Window *w, struct Cursor *c, struct File *f)
 {
-	/*if (!f)//->saved)	<-- remove comment when implementation ready
-		not_saved(w);*/
 	print_editor(w);
 	border_line_print(w->height-1, "File path:", w);
 	move(w->height-1, 10);

@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
 {
 	//Initialize all of our core data structures in memory
 	struct Window *w = malloc(sizeof(struct Window));
-	//char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
 	w->contents = calloc(1,array_size(0)*sizeof(char));
 	w->top = 0;
 	
@@ -54,7 +53,10 @@ int main(int argc, char *argv[])
 				get_input(w, c, f);
 				break;
 			case NOT_SAVED:
-				not_saved(w);
+				if(msg_box(w, "File not saved! Do you want to continue?"))
+					mode=OPEN_FILE;
+				else
+					mode=EDIT_MODE;
 				break;
 			case OPEN_FILE:
 				open_dialog(w, c, f);
