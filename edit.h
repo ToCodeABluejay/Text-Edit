@@ -39,6 +39,7 @@
 #define EDIT_MODE	0
 #define NOT_SAVED	1
 #define OPEN_FILE	2
+#define NEW_FILE	3
 
 //Define our data-structures
 struct Window
@@ -71,6 +72,7 @@ struct Change
 };
 
 extern int mode;
+extern int svdmd;
 
 //Define our functions
 void initialize_editor();							//Initialize NCurses and color mode
@@ -84,11 +86,12 @@ void get_input(struct Window *, struct Cursor *, struct File *);
 void key_left(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 void del_char(struct Window *, struct Cursor *);
-void open_dialog(struct Window *, struct Cursor *, struct File *);
+void file_dialog(struct Window *, struct Cursor *, struct File *);
 bool msg_box(struct Window *w, char *msg);
-void dialog_input(struct Window *, struct File *);
+int dialog_input(struct Window *, char *);
 void open(struct Window *, struct File *);
 void save(struct Window *, struct File *);
+void new(struct Window *, struct File *, struct Cursor *);
 unsigned long long array_size(int);
 
 #endif /* EDIT_H */

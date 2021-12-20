@@ -68,16 +68,13 @@ void key_right(struct Window *w, struct Cursor *c)
 /*When in edit-mode and the right arrow key is pressed,
  *do this*/
 {
-	int i = get_line_number_pos(c->y, w->contents);
-	i += c->x;
-	if (w->contents[i]!='\n'&&w->contents[i+1]!='\0')
+	if (w->contents[c->abs]!='\n'&&w->contents[c->abs]!='\0')
 	{
 		c->x++; c->abs++;
 	}
-	else if (w->contents[i]=='\n')
+	else if (w->contents[c->abs]=='\n')
 	{
-		c->x=0; c->y++;
-		c->abs=get_line_number_pos(c->y, w->contents);
+		c->x=0; c->y++; c->abs++;
 	}
 	else
 		beep();
@@ -130,12 +127,18 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			save(w, f);
 			break;
 		case KEY_F(3):
+			svdmd=OPEN_FILE;
 			if (f->saved)
-				mode=OPEN_FILE;
+				mode=svdmd;
 			else
 				mode=NOT_SAVED;
 			break;
 		case KEY_F(4):
+			svdmd=NEW_FILE;
+			if (f->saved)
+				mode=svdmd;
+			else
+				mode=NOT_SAVED;
 			break;
 		case KEY_F(5):
 			break;
@@ -157,25 +160,25 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 	}
 }
 
-void dialog_input(struct Window *w, struct File *f)
+int dialog_input(struct Window *w, char *str)
 {
 	static int i=0;
 	int k;
 	
-	printw(f->path);
+	printw(str);
 	switch(k = getch())
 	{
 		case '\n':
-			open(w,f);
-			mode=EDIT_MODE;
+			return 0;
 			break;
 		case KEY_BACKSPACE:
 			i--;
-			f->path[i]='\0';
+			str[i]='\0';
+			break;
 		case KEY_RESIZE:
 			break;
 		default:
-			f->path[i] = (char) k;
+			str[i] = (char) k;
 			i++;
 			break;
 	}

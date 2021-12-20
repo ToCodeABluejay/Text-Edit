@@ -61,3 +61,14 @@ void save(struct Window *w, struct File *f)
 	}
 }
 
+void new(struct Window *w, struct File *f, struct Cursor *c)
+{
+	f->fp=NULL;
+	f->ro=true;
+	f->saved=true;
+	
+	strcpy(w->contents, "");
+	
+	c->x=0; c->y=0; c->abs=0;
+}
+

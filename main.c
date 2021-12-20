@@ -24,6 +24,7 @@
 #include "edit.h"
 
 int mode=EDIT_MODE;
+int svdmd;
 
 int main(int argc, char *argv[])
 {
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
 	c->x=0, c->y=0; c->abs=0;		//Make sure our cursor is initialized at position (0, 0)
 	
 	struct File *f = malloc(sizeof(struct File));
+	f->saved=true;
 	
 	struct Change *ch = malloc(sizeof(struct Change));
 	
@@ -54,12 +56,33 @@ int main(int argc, char *argv[])
 				break;
 			case NOT_SAVED:
 				if(msg_box(w, "File not saved! Do you want to continue?"))
-					mode=OPEN_FILE;
+				{
+					strcpy(f->path, "");
+					mode=svdmd;
+				}
 				else
 					mode=EDIT_MODE;
 				break;
 			case OPEN_FILE:
-				open_dialog(w, c, f);
+				file_dialog(w, c, f);
+				if(!dialog_input(w,f->path))
+				{
+					open(w,f);
+					mode=EDIT_MODE;
+				}
+				break;
+			case NEW_FILE:
+				file_dialog(w, c, f);
+				if(!dialog_input(w,f->path))
+				{
+					new(w,f,c);
+					if (f->fp = fopen(f->path, "w"))
+					{
+						f->ro=false;
+						fclose(f->fp);
+					}
+					mode=EDIT_MODE;
+				}
 				break;
 		}
 		refresh();

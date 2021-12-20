@@ -36,8 +36,6 @@ void initialize_editor()	//Initialize NCurses
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
 	keypad(stdscr, TRUE);
 	noecho();
-	//notimeout(stdscr, FALSE);
-	//nonl();
 }
 
 void border_line_print(int r, char *t, struct Window *w)	//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
@@ -65,7 +63,10 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 	
 	for (i,j; i < w->width-1 && j+i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
 	{
-		addch(w->contents[j+i]);
+		if(w->contents[j+i]!='\t')
+			addch(w->contents[j+i]);
+		else
+			addch(' ');
 	}
 	if (i==w->width-1)
 		addch('>');
@@ -114,11 +115,10 @@ bool msg_box(struct Window *w, char *msg)
 	}
 }
 
-void open_dialog(struct Window *w, struct Cursor *c, struct File *f)
+void file_dialog(struct Window *w, struct Cursor *c, struct File *f)
 {
 	print_editor(w);
 	border_line_print(w->height-1, "File path:", w);
 	move(w->height-1, 10);
-	dialog_input(w, f);
 }
 
