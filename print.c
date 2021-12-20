@@ -139,7 +139,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 	switch (m)
 	{
 		case EDIT_MODE:
-			dialog(w, "[Esc] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
+			dialog(w, "[Ctrl+c] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
 			print_contents(w, c, f);
 			get_input(w, c, f);
 			break;
