@@ -161,13 +161,19 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			if (k!='\n')
 				c->x++;
 			else
-				c->y++;
+			{
+				c->x=0; c->y++;
+			}
 			f->saved=false;
 			break;
 	}
 }
 
 int dialog_input(struct Window *w, char *str)
+/*When recieving input from a prompt
+ *as opposed to the regular EDIT_MODE
+ *use this function instead of get_input
+ */
 {
 	int i=strlen(str);
 	int k;

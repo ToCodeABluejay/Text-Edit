@@ -39,69 +39,18 @@ int main(int argc, char *argv[])
 	struct File *f = malloc(sizeof(struct File));
 	f->saved=true;
 	
-	struct Change *ch = malloc(sizeof(struct Change));
-	
-	initialize_editor();
-	while(1)
+	if (argc)
 	{
-		cbreak();
-		curs_set(1);
+		strcpy(f->path, argv[1]);
+		open(w, f);
+	}
+	
+	//Initialize curses
+	initialize_editor();
+	while(1)	//Run until user quits application
+	{
 		getmaxyx(stdscr, w->height, w->width); //Get the dimensions of current screen (stdscr) and place those values into the Window structure
-		
-		switch (mode)
-		{
-			case EDIT_MODE:
-				dialog(w, "[Esc] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
-				print_contents(w, c, f);
-				get_input(w, c, f);
-				break;
-			case NOT_SAVED:
-				if(msg_box(w, "File not saved! Do you want to continue?"))
-				{
-					strcpy(f->path, "");
-					mode=svdmd;
-				}
-				else
-					mode=EDIT_MODE;
-				break;
-			case OPEN_FILE:
-				dialog(w, "File path:", "Open File");
-				if(!dialog_input(w,f->path))
-				{
-					open(w,f);
-					mode=EDIT_MODE;
-				}
-				break;
-			case NEW_FILE:
-				dialog(w, "File path:", "New File");
-				if(!dialog_input(w,f->path))
-				{
-					new(w,f,c);
-					if (f->fp = fopen(f->path, "w"))
-					{
-						f->ro=false;
-						fclose(f->fp);
-					}
-					mode=EDIT_MODE;
-				}
-				break;
-			case DEL_LINE:
-				dialog(w, "Line number:", "Delete Line");
-				if(!dialog_input(w,ln))
-				{
-					del_line(atoi(ln)-1, w->contents);
-					mode=EDIT_MODE;
-				}
-				break;
-			case SAVE_AS:
-				dialog(w, "File path:", "Save As");
-				if(!dialog_input(w,f->path))
-				{
-					save(w, f);
-					mode=EDIT_MODE;
-				}
-				break;
-		}
+		run_mode(mode, w, c, f);	//Print to the console according to our mode of operation
 		refresh();
 		clear();
 	}

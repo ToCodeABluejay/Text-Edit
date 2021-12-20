@@ -22,7 +22,8 @@
  */
 #include "edit.h"
 
-void initialize_editor()	//Initialize NCurses
+void initialize_editor()
+//Initialize curses
 {
 	initscr();						//Initialize screen and curses mode
 	if (has_colors() == FALSE)				//Check to see if the console supports colored print, if not, then execute the following segment
@@ -35,10 +36,14 @@ void initialize_editor()	//Initialize NCurses
 	init_pair(EDITOR_SCHEME, COLOR_BLACK, COLOR_WHITE);	//Initialize color pair of black text on a white background (for editor)
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
 	keypad(stdscr, TRUE);
-	noecho();
+	cbreak();
+	curs_set(1);
 }
 
-void border_line_print(int r, char *t, struct Window *w)	//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
+void border_line_print(int r, char *t, struct Window *w)
+/*Print a Cyan line at row "r" with text "t", with
+ *restrictions of Window "w"
+ */
 {
 	attrset(COLOR_PAIR(BOUNDARY_SCHEME));		//Turn on attribute for the boundary color scheme
 	move(r, 0);					//Set cursor to the beginning of the line for the y-position "row"
@@ -50,7 +55,10 @@ void border_line_print(int r, char *t, struct Window *w)	//Print a Cyan line at 
 	move(r, 0);					//Move the cursor back to the beginning of the line of the first row printed
 }
 
-void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line at row "r" with text "t", with restrictions and contents of Window "w", using cursor position x,y
+void content_line_print(int r, struct Window *w, struct Cursor *c)
+/*Print line at row "r" with text "t", with restrictions and
+ *contents of Window "w", using cursor position x,y
+ */
 {
 	long i = 0, j;
 	
@@ -73,6 +81,7 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 }
 
 void print_contents(struct Window *w, struct Cursor *c, struct File *f)
+//Used to print all of the regular editor contents
 {
     int i=0;
     while (i<w->height-2)
@@ -84,6 +93,9 @@ void print_contents(struct Window *w, struct Cursor *c, struct File *f)
 }
 
 bool msg_box(struct Window *w, char *msg)
+/*A very cimple continue/cancel message
+ *window
+ */
 {
 	attrset(COLOR_PAIR(BOUNDARY_SCHEME));
 	move(0,0);
@@ -104,6 +116,11 @@ bool msg_box(struct Window *w, char *msg)
 }
 
 void dialog(struct Window *w, char *prompt, char *msg)
+/*Prints a string msg on the top line
+ *and prompt on the bottom. Used equally
+ *for drawing the regular editor as well
+ *as for various prompts
+ */
 {
 	attrset(COLOR_PAIR(EDITOR_SCHEME));
 	move(0, 0);
@@ -112,5 +129,66 @@ void dialog(struct Window *w, char *prompt, char *msg)
 	border_line_print(0, msg, w);	
 	border_line_print(w->height-1, prompt, w);
 	move(w->height-1, strlen(prompt));
+}
+
+void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
+/*Prints to the console the coresponding output
+ *based upon the current given mode of operation
+ */
+{
+	switch (m)
+	{
+		case EDIT_MODE:
+			dialog(w, "[Esc] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
+			print_contents(w, c, f);
+			get_input(w, c, f);
+			break;
+		case NOT_SAVED:
+			if(msg_box(w, "File not saved! Do you want to continue?"))
+			{
+				strcpy(f->path, "");
+				m=svdmd;
+			}
+			else
+				m=EDIT_MODE;
+			break;
+		case OPEN_FILE:
+			dialog(w, "File path:", "Open File");
+			if(!dialog_input(w,f->path))
+			{
+				open(w,f);
+				m=EDIT_MODE;
+			}
+			break;
+		case NEW_FILE:
+			dialog(w, "File path:", "New File");
+			if(!dialog_input(w,f->path))
+			{
+				new(w,f,c);
+				if (f->fp = fopen(f->path, "w"))
+				{
+					f->ro=false;
+					fclose(f->fp);
+				}
+				m=EDIT_MODE;
+			}
+			break;
+		case DEL_LINE:
+			dialog(w, "Line number:", "Delete Line");
+			if(!dialog_input(w,ln))
+			{
+				del_line(atoi(ln)-1, w->contents);
+				m=EDIT_MODE;
+			}
+			break;
+		case SAVE_AS:
+			dialog(w, "File path:", "Save As");
+			if(!dialog_input(w,f->path))
+			{
+				save(w, f);
+				m=EDIT_MODE;
+			}
+			break;
+	}
 }
 

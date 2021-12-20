@@ -65,37 +65,45 @@ struct File
 	bool saved;
 };
 
-struct Change
+/*struct Change		//Not implemented, possibly later
 {
 	int line;	//Line of the change
 	char *ot;	//Old text of the line
 	char *nt;	//New text of the line
 	struct Change *prev;
 	struct Change *next;
-};
+};*/
 
 extern int mode, svdmd;
 extern char ln[NAME_MAX];
 
 //Define our functions
+
+//print.c
 void initialize_editor();							//Initialize NCurses and color mode
 void border_line_print(int, char *, struct Window *);			//Print a Cyan line at row "r" with text "t", with restrictions of Window "w"
 void content_line_print(int, struct Window *, struct Cursor *);	//Print line at row "r" with text "t", with restrictions and contents of Window "w", using cursor position x,y
-void print_editor(struct Window *);						//Prints the editor sans file contents
 void print_contents(struct Window *, struct Cursor *, struct File *);	//Prints the inner contents of the editor
+void dialog(struct Window *, char *, char *);
+bool msg_box(struct Window *, char *);
+void run_mode(int, struct Window *, struct Cursor *, struct File *);
+
+//text.c
 int get_line_number_pos(int, char *);					//Gets the position of the line number 'line' in text 'text'
 int get_end_of_line(int, char *);
-void get_input(struct Window *, struct Cursor *, struct File *);
-void key_left(struct Window *, struct Cursor *);
+unsigned long long array_size(int);
 void ins_char(int, char, char *);
 void del_char(struct Window *, struct Cursor *);
 void del_line(int, char *);
-void dialog(struct Window *, char *, char *);
-bool msg_box(struct Window *, char *);
+
+//input.c
+void get_input(struct Window *, struct Cursor *, struct File *);
+void key_left(struct Window *, struct Cursor *);
 int dialog_input(struct Window *, char *);
+
+//file.c
 void open(struct Window *, struct File *);
 void save(struct Window *, struct File *);
 void new(struct Window *, struct File *, struct Cursor *);
-unsigned long long array_size(int);
 
 #endif /* EDIT_H */

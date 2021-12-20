@@ -24,7 +24,8 @@
 
 void open(struct Window *w, struct File *f)
 /*Opens a file, copies the contents, and
- *assesses file permissions*/
+ *assesses file permissions
+ */
 {
 	struct stat f_stat;
 	f->fp = fopen(f->path, "r");
@@ -50,6 +51,7 @@ void open(struct Window *w, struct File *f)
 }
 
 void save(struct Window *w, struct File *f)
+//Saves the file. If it cannot - calls SAVE_AS
 {
 	f->fp = fopen(f->path, "w");
 	
@@ -64,6 +66,7 @@ void save(struct Window *w, struct File *f)
 }
 
 void new(struct Window *w, struct File *f, struct Cursor *c)
+//Creates a blank file
 {
 	f->fp=NULL;
 	f->ro=true;
