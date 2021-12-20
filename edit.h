@@ -72,8 +72,8 @@ struct Change
 	struct Change *next;
 };
 
-extern int mode;
-extern int svdmd;
+extern int mode, svdmd;
+extern char ln[NAME_MAX];
 
 //Define our functions
 void initialize_editor();							//Initialize NCurses and color mode

@@ -141,6 +141,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 				mode=NOT_SAVED;
 			break;
 		case KEY_F(5):
+			strcpy(ln, "");
 			mode=DEL_LINE;
 			break;
 		case KEY_BACKSPACE:
