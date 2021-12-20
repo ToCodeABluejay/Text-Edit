@@ -59,6 +59,8 @@ void save(struct Window *w, struct File *f)
 		fclose(f->fp);
 		f->saved=true;
 	}
+	else
+		mode=SAVE_AS;
 }
 
 void new(struct Window *w, struct File *f, struct Cursor *c)

@@ -57,7 +57,7 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 	attrset(COLOR_PAIR(EDITOR_SCHEME));		//Turn on attribute for the boundary color scheme
 	move(r+1, 0);					//Set cursor to the beginning of the line for the y-position "row" -- all being relative to editor bounds
 
-	j = get_line_number_pos(r, w->contents);
+	j = get_line_number_pos(r+w->top, w->contents);
 	if (r==c->y)
 		j += (long) c->x-(c->x%w->width)-floor(c->x/w->width);
 	
@@ -72,25 +72,13 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)	//Print line 
 		addch('>');
 }
 
-void print_editor(struct Window *w)
-{
-	getmaxyx(stdscr, w->height, w->width);	//Get the dimensions of current screen (stdscr) and place those values into the Window structure
-	
-	attrset(COLOR_PAIR(EDITOR_SCHEME));			//Set color pair for editor (black text on white background)
-	move(0, 0);
-	for (int i = 0; i < w->height * w->width; i++) printw(" ");
-	
-	border_line_print(0, "Unnamed Text Editor", w);			//Print a Cyan line from the given y position (0, representing the first line)
-	border_line_print(w->height - 1, "[Esc] Quit  [F1] Help  [F2] Save  [F3] Open  [F4] New  [F5] Delete line", w);	//Print the bottom line
-}
-
 void print_contents(struct Window *w, struct Cursor *c, struct File *f)
 {
-    int i=0, pos = get_line_number_pos(w->top, w->contents);
-    while (pos<w->height-2)
+    int i=0;
+    while (i<w->height-2)
     {
-        content_line_print(pos, w, c);
-        pos++;
+        content_line_print(i, w, c);
+        i++;
     }
     move(c->y-w->top+1, c->x%w->width);
 }
@@ -115,9 +103,13 @@ bool msg_box(struct Window *w, char *msg)
 	}
 }
 
-void dialog(struct Window *w, char *prompt)
+void dialog(struct Window *w, char *prompt, char *msg)
 {
-	print_editor(w);
+	attrset(COLOR_PAIR(EDITOR_SCHEME));
+	move(0, 0);
+	for (int i = 0; i < w->height * w->width; i++) printw(" ");
+	
+	border_line_print(0, msg, w);	
 	border_line_print(w->height-1, prompt, w);
 	move(w->height-1, strlen(prompt));
 }

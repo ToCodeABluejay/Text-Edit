@@ -28,11 +28,11 @@ void repos_x(struct Window *w, struct Cursor *c)
  *to the end of the given line*/
 {
 	int max, pos=get_line_number_pos(c->y, w->contents);
-	max=get_end_of_line(pos, w->contents)-pos;
-	if (c->x>max)
+	max=get_end_of_line(pos, w->contents);
+	if (c->x>max-pos)
 	{
-		c->x=max;
-		c->abs=pos+max;
+		c->x=max-pos;
+		c->abs=max;
 	}
 	else
 		c->abs=pos+c->x;
@@ -44,6 +44,8 @@ void key_up(struct Window *w, struct Cursor *c)
 {
 	if (c->y>0)
 	{
+		if(c->y==w->top)
+			w->top--;
 		c->y--;
 		repos_x(w, c);
 	}
@@ -57,6 +59,8 @@ void key_down(struct Window *w, struct Cursor *c)
 {
 	if (get_line_number_pos(c->y+1, w->contents)!=EOF)
 	{
+		if(c->y-w->top==w->height-3)
+			w->top++;
 		c->y++;
 		repos_x(w, c);
 	}
@@ -122,9 +126,10 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			key_right(w, c);
 			break;
 		case KEY_F(1):
+			save(w, f);
 			break;
 		case KEY_F(2):
-			save(w, f);
+			mode=SAVE_AS;
 			break;
 		case KEY_F(3):
 			svdmd=OPEN_FILE;

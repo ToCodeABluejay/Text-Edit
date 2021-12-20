@@ -46,11 +46,12 @@ int main(int argc, char *argv[])
 	{
 		cbreak();
 		curs_set(1);
+		getmaxyx(stdscr, w->height, w->width); //Get the dimensions of current screen (stdscr) and place those values into the Window structure
 		
-		print_editor(w);
 		switch (mode)
 		{
 			case EDIT_MODE:
+				dialog(w, "[Esc] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
 				print_contents(w, c, f);
 				get_input(w, c, f);
 				break;
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
 					mode=EDIT_MODE;
 				break;
 			case OPEN_FILE:
-				dialog(w, "File path:");
+				dialog(w, "File path:", "Open File");
 				if(!dialog_input(w,f->path))
 				{
 					open(w,f);
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case NEW_FILE:
-				dialog(w, "File path:");
+				dialog(w, "File path:", "New File");
 				if(!dialog_input(w,f->path))
 				{
 					new(w,f,c);
@@ -85,10 +86,18 @@ int main(int argc, char *argv[])
 				}
 				break;
 			case DEL_LINE:
-				dialog(w, "Line number:");
+				dialog(w, "Line number:", "Delete Line");
 				if(!dialog_input(w,ln))
 				{
 					del_line(atoi(ln)-1, w->contents);
+					mode=EDIT_MODE;
+				}
+				break;
+			case SAVE_AS:
+				dialog(w, "File path:", "Save As");
+				if(!dialog_input(w,f->path))
+				{
+					save(w, f);
 					mode=EDIT_MODE;
 				}
 				break;

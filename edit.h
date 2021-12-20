@@ -36,11 +36,13 @@
 #define EDITOR_SCHEME	1
 #define BOUNDARY_SCHEME	2
 
+//Our different operating modes
 #define EDIT_MODE	0
 #define NOT_SAVED	1
 #define OPEN_FILE	2
 #define NEW_FILE	3
-#define DEL_LINE	4
+#define SAVE_AS		4
+#define DEL_LINE	5
 
 //Define our data-structures
 struct Window
@@ -88,8 +90,8 @@ void key_left(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
 void del_char(struct Window *, struct Cursor *);
 void del_line(int, char *);
-void dialog(struct Window *, char *);
-bool msg_box(struct Window *w, char *msg);
+void dialog(struct Window *, char *, char *);
+bool msg_box(struct Window *, char *);
 int dialog_input(struct Window *, char *);
 void open(struct Window *, struct File *);
 void save(struct Window *, struct File *);
