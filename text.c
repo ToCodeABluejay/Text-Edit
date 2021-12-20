@@ -80,16 +80,22 @@ void ins_char(int pos, char k, char *str)
 	 *the original to be double the previous size, copy
 	 *the contents back in.*/
 	{
-		char *resize = (char*) malloc(strlen(str));
+		char *resize = (char*) calloc(1, strlen(str));
 		strcpy(resize, str);
 		str = realloc(str,array_size(strlen(str))*2);
 		strcpy(str, resize);
 	}
 	//Insert the character at the given position
-	char *cpy = (char*) malloc(array_size(strlen(str)));
+	char *cpy = (char*) calloc(1, array_size(strlen(str)));
 	strncpy(cpy, str, pos);
 	cpy[pos] = k;
 	strcat(cpy, str+pos);
 	strcpy(str, cpy);
+}
+
+void del_char(struct Window *w, struct Cursor *c)
+{
+	key_left(w,c);
+	for(int pos=c->abs;w->contents[pos]!='\0'; pos++) w->contents[pos]=w->contents[pos+1];
 }
 

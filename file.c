@@ -48,3 +48,15 @@ void open(struct Window *w, struct File *f)
 		fclose(f->fp);
 	}
 }
+
+void save(struct Window *w, struct File *f)
+{
+	f->fp = fopen(f->path, "w");
+	
+	if (f->fp)
+	{
+		fputs(w->contents, f->fp);
+		fclose(f->fp);
+	}
+}
+

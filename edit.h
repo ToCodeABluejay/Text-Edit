@@ -80,12 +80,15 @@ void print_editor(struct Window *);						//Prints the editor sans file contents
 void print_contents(struct Window *, struct Cursor *, struct File *);	//Prints the inner contents of the editor
 int get_line_number_pos(int, char *);					//Gets the position of the line number 'line' in text 'text'
 int get_end_of_line(int, char *);
-void get_input(struct Window *, struct Cursor *);
+void get_input(struct Window *, struct Cursor *, struct File *);
+void key_left(struct Window *, struct Cursor *);
 void ins_char(int, char, char *);
+void del_char(struct Window *, struct Cursor *);
 void open_dialog(struct Window *, struct Cursor *, struct File *);
 void not_saved(struct Window *);
 void dialog_input(struct Window *, struct File *);
 void open(struct Window *, struct File *);
+void save(struct Window *, struct File *);
 unsigned long long array_size(int);
 
 #endif /* EDIT_H */

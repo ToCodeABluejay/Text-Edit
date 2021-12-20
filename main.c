@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	//Initialize all of our core data structures in memory
 	struct Window *w = malloc(sizeof(struct Window));
 	//char m[61] = "Hello, world!! The quick brown fox jumps over the lazy dog!!";
-	w->contents = malloc(array_size(0)*sizeof(char));
+	w->contents = calloc(1,array_size(0)*sizeof(char));
 	w->top = 0;
 	
 	struct Cursor *c = malloc(sizeof(struct Cursor));
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		{
 			case EDIT_MODE:
 				print_contents(w, c, f);
-				get_input(w, c);
+				get_input(w, c, f);
 				break;
 			case NOT_SAVED:
 				not_saved(w);

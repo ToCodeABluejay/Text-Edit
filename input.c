@@ -30,8 +30,12 @@ void repos_x(struct Window *w, struct Cursor *c)
 	int max, pos=get_line_number_pos(c->y, w->contents);
 	max=get_end_of_line(pos, w->contents)-pos;
 	if (c->x>max)
+	{
 		c->x=max;
-	c->abs=pos+max;
+		c->abs=pos+max;
+	}
+	else
+		c->abs=pos+c->x;
 }
 
 void key_up(struct Window *w, struct Cursor *c)
@@ -66,11 +70,11 @@ void key_right(struct Window *w, struct Cursor *c)
 {
 	int i = get_line_number_pos(c->y, w->contents);
 	i += c->x;
-	if (w->contents[i+1]!='\n'&&w->contents[i+1]!='\0')
+	if (w->contents[i]!='\n'&&w->contents[i+1]!='\0')
 	{
 		c->x++; c->abs++;
 	}
-	else if (w->contents[i+1]=='\n')
+	else if (w->contents[i]=='\n')
 	{
 		c->x=0; c->y++;
 		c->abs=get_line_number_pos(c->y, w->contents);
@@ -101,7 +105,7 @@ void key_left(struct Window *w, struct Cursor *c)
 		beep();
 }
 
-void get_input(struct Window *w, struct Cursor *c)
+void get_input(struct Window *w, struct Cursor *c, struct File *f)
 /*When in edit-mode and getting user input,
  *do this*/
 {
@@ -123,6 +127,7 @@ void get_input(struct Window *w, struct Cursor *c)
 		case KEY_F(1):
 			break;
 		case KEY_F(2):
+			save(w, f);
 			break;
 		case KEY_F(3):
 			mode=OPEN_FILE;
@@ -131,11 +136,18 @@ void get_input(struct Window *w, struct Cursor *c)
 			break;
 		case KEY_F(5):
 			break;
+		case KEY_BACKSPACE:
+			del_char(w, c);
+			break;
 		case KEY_RESIZE:
 			break;
 		default:
 			ins_char(c->abs, (char) k, w->contents);
-			c->x++; c->abs++;
+			c->abs++;
+			if (k!='\n')
+				c->x++;
+			else
+				c->y++;
 			break;
 	}
 }
