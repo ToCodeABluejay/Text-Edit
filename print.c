@@ -37,6 +37,8 @@ void initialize_editor()
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
 	keypad(stdscr, true);
 	cbreak();
+	//raw();
+	//nonl();
 	curs_set(1);
 }
 
@@ -69,7 +71,7 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)
 	if (r==c->y)
 		j += (long) c->x-(c->x%w->width)-floor(c->x/w->width);
 	
-	for (i,j; i < w->width-1 && j+i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
+	for (; i < w->width-1 && j+i < get_end_of_line(j, w->contents); i++)	//Repeat the following code segment until the rest of the bar is full
 	{
 		if(w->contents[j+i]!='\t')
 			addch(w->contents[j+i]);
@@ -113,6 +115,7 @@ bool msg_box(struct Window *w, char *msg)
 			return false;
 			break;
 	}
+	return NULL;
 }
 
 void dialog(struct Window *w, char *prompt, char *msg)
@@ -136,6 +139,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
  *based upon the current given mode of operation
  */
 {
+	int rep;
 	switch (m)
 	{
 		case EDIT_MODE:
@@ -156,7 +160,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 			dialog(w, "File path:", "Open File");
 			if(!dialog_input(w,f->path))
 			{
-				open(w,f);
+				open_file(w,f);
 				m=EDIT_MODE;
 			}
 			break;
@@ -164,8 +168,9 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 			dialog(w, "File path:", "New File");
 			if(!dialog_input(w,f->path))
 			{
-				new(w,f,c);
-				if (f->fp = fopen(f->path, "w"))
+				new(w,c,f);
+				f->fp = fopen(f->path, "w");
+				if (f->fp)
 				{
 					f->ro=false;
 					fclose(f->fp);

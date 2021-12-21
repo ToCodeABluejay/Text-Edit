@@ -28,6 +28,10 @@ char ln[NAME_MAX]="";
 
 int main(int argc, char *argv[])
 {
+	#ifdef __OpenBSD__
+	pledge("stdio rpath wpath cpath tty", NULL);
+	#endif
+	
 	//Initialize all of our core data structures in memory
 	struct Window *w = malloc(sizeof(struct Window));
 	w->contents = calloc(1,array_size(0)*sizeof(char));
@@ -37,12 +41,14 @@ int main(int argc, char *argv[])
 	c->x=0, c->y=0; c->abs=0;		//Make sure our cursor is initialized at position (0, 0)
 	
 	struct File *f = malloc(sizeof(struct File));
+	strncpy(f->path, "", PATH_MAX);
+	f->ro=true;
 	f->saved=true;
 	
-	if (argc)
+	if (argc>1)
 	{
 		strcpy(f->path, argv[1]);
-		open(w, f);
+		open_file(w, f);
 	}
 	
 	//Initialize curses

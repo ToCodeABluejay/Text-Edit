@@ -141,7 +141,9 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 		case KEY_F(4):
 			svdmd=NEW_FILE;
 			if (f->saved)
+			{
 				mode=svdmd;
+			}
 			else
 				mode=NOT_SAVED;
 			break;
@@ -181,7 +183,8 @@ int dialog_input(struct Window *w, char *str)
 	printw(str);
 	switch(k = getch())
 	{
-		case '\n':
+		case 10:
+			str[i]='\0';
 			return 0;
 			break;
 		case KEY_BACKSPACE:
@@ -195,4 +198,5 @@ int dialog_input(struct Window *w, char *str)
 			i++;
 			break;
 	}
+	return 1;
 }

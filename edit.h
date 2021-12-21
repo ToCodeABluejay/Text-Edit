@@ -31,6 +31,9 @@
 #include <math.h>
 #include <limits.h>
 #include <sys/stat.h>
+#ifdef __OpenBSD__
+#include <unistd.h>
+#endif
 
 //Define color schemes
 #define EDITOR_SCHEME	1
@@ -102,8 +105,8 @@ void key_left(struct Window *, struct Cursor *);
 int dialog_input(struct Window *, char *);
 
 //file.c
-void open(struct Window *, struct File *);
+void open_file(struct Window *, struct File *);
 void save(struct Window *, struct File *);
-void new(struct Window *, struct File *, struct Cursor *);
+void new(struct Window *, struct Cursor *, struct File *);
 
 #endif /* EDIT_H */

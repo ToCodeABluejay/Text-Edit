@@ -22,7 +22,7 @@
  */
 #include "edit.h"
 
-void open(struct Window *w, struct File *f)
+void open_file(struct Window *w, struct File *f)
 /*Opens a file, copies the contents, and
  *assesses file permissions
  */
@@ -55,7 +55,7 @@ void save(struct Window *w, struct File *f)
 {
 	f->fp = fopen(f->path, "w");
 	
-	if (f->fp)
+	if (!f->ro)
 	{
 		fputs(w->contents, f->fp);
 		fclose(f->fp);
@@ -65,7 +65,7 @@ void save(struct Window *w, struct File *f)
 		mode=SAVE_AS;
 }
 
-void new(struct Window *w, struct File *f, struct Cursor *c)
+void new(struct Window *w, struct Cursor *c, struct File *f)
 //Creates a blank file
 {
 	f->fp=NULL;
