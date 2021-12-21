@@ -25,7 +25,8 @@
 void repos_x(struct Window *w, struct Cursor *c)
 /*When the cursor's x-position is greater than the
  *length of the given line, move the cursor back
- *to the end of the given line*/
+ *to the end of the given line
+ */
 {
 	int max, pos=get_line_number_pos(c->y, w->contents);
 	max=get_end_of_line(pos, w->contents);
@@ -40,7 +41,8 @@ void repos_x(struct Window *w, struct Cursor *c)
 
 void key_up(struct Window *w, struct Cursor *c)
 /*When in edit-mode and the up arrow key is pressed,
- *do this*/
+ *do this
+ */
 {
 	if (c->y>0)
 	{
@@ -55,7 +57,8 @@ void key_up(struct Window *w, struct Cursor *c)
 
 void key_down(struct Window *w, struct Cursor *c)
 /*When in edit-mode and the down arrow key is pressed,
- *do this*/
+ *do this
+ */
 {
 	if (get_line_number_pos(c->y+1, w->contents)!=EOF)
 	{
@@ -70,7 +73,8 @@ void key_down(struct Window *w, struct Cursor *c)
 
 void key_right(struct Window *w, struct Cursor *c)
 /*When in edit-mode and the right arrow key is pressed,
- *do this*/
+ *do this
+ */
 {
 	if (w->contents[c->abs]!='\n'&&w->contents[c->abs]!='\0')
 	{
@@ -86,7 +90,8 @@ void key_right(struct Window *w, struct Cursor *c)
 
 void key_left(struct Window *w, struct Cursor *c)
 /*When in edit-mode and the left arrow key is pressed,
- *do this*/
+ *do this
+ */
 {
 	int i = get_line_number_pos(c->y, w->contents);
 	i += c->x;
@@ -108,7 +113,8 @@ void key_left(struct Window *w, struct Cursor *c)
 
 void get_input(struct Window *w, struct Cursor *c, struct File *f)
 /*When in edit-mode and getting user input,
- *do this*/
+ *do this
+ */
 {
 	int k;
 	switch(k = getch())
@@ -183,7 +189,7 @@ int dialog_input(struct Window *w, char *str)
 	printw(str);
 	switch(k = getch())
 	{
-		case 10:
+		case '\n':
 			str[i]='\0';
 			return 0;
 			break;

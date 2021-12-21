@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 	
 	struct File *f = malloc(sizeof(struct File));
 	strncpy(f->path, "", PATH_MAX);
+	strncpy(f->filename, "", NAME_MAX);
 	f->ro=true;
 	f->saved=true;
 	
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
 	while(1)	//Run until user quits application
 	{
 		getmaxyx(stdscr, w->height, w->width); //Get the dimensions of current screen (stdscr) and place those values into the Window structure
-		run_mode(mode, w, c, f);	//Print to the console according to our mode of operation
+		run_mode(&mode, w, c, f);	//Print to the console according to our mode of operation
 		refresh();
 		clear();
 	}

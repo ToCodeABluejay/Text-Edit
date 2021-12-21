@@ -89,7 +89,7 @@ void content_line_print(int, struct Window *, struct Cursor *);	//Print line at 
 void print_contents(struct Window *, struct Cursor *, struct File *);	//Prints the inner contents of the editor
 void dialog(struct Window *, char *, char *);
 bool msg_box(struct Window *, char *);
-void run_mode(int, struct Window *, struct Cursor *, struct File *);
+void run_mode(int *, struct Window *, struct Cursor *, struct File *);
 
 //text.c
 int get_line_number_pos(int, char *);					//Gets the position of the line number 'line' in text 'text'

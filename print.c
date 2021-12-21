@@ -37,8 +37,6 @@ void initialize_editor()
 	init_pair(BOUNDARY_SCHEME, COLOR_BLACK, COLOR_CYAN);	//Initialize color pair of black text on a cyan background (for top and bottom boundaries)
 	keypad(stdscr, true);
 	cbreak();
-	//raw();
-	//nonl();
 	curs_set(1);
 }
 
@@ -134,13 +132,12 @@ void dialog(struct Window *w, char *prompt, char *msg)
 	move(w->height-1, strlen(prompt));
 }
 
-void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
+void run_mode(int *m, struct Window *w, struct Cursor *c, struct File *f)
 /*Prints to the console the coresponding output
  *based upon the current given mode of operation
  */
 {
-	int rep;
-	switch (m)
+	switch (*m)
 	{
 		case EDIT_MODE:
 			dialog(w, "[Ctrl+c] Quit  [F1] Save  [F2] Save as  [F3] Open  [F4] New  [F5] Delete line", "Unnamed Text Editor");
@@ -151,17 +148,17 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 			if(msg_box(w, "File not saved! Do you want to continue?"))
 			{
 				strcpy(f->path, "");
-				m=svdmd;
+				*m=svdmd;
 			}
 			else
-				m=EDIT_MODE;
+				*m=EDIT_MODE;
 			break;
 		case OPEN_FILE:
 			dialog(w, "File path:", "Open File");
 			if(!dialog_input(w,f->path))
 			{
 				open_file(w,f);
-				m=EDIT_MODE;
+				*m=EDIT_MODE;
 			}
 			break;
 		case NEW_FILE:
@@ -175,7 +172,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 					f->ro=false;
 					fclose(f->fp);
 				}
-				m=EDIT_MODE;
+				*m=EDIT_MODE;
 			}
 			break;
 		case DEL_LINE:
@@ -183,7 +180,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 			if(!dialog_input(w,ln))
 			{
 				del_line(atoi(ln)-1, w->contents);
-				m=EDIT_MODE;
+				*m=EDIT_MODE;
 			}
 			break;
 		case SAVE_AS:
@@ -191,7 +188,7 @@ void run_mode(int m, struct Window *w, struct Cursor *c, struct File *f)
 			if(!dialog_input(w,f->path))
 			{
 				save(w, f);
-				m=EDIT_MODE;
+				*m=EDIT_MODE;
 			}
 			break;
 	}
