@@ -147,9 +147,7 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 		case KEY_F(4):
 			svdmd=NEW_FILE;
 			if (f->saved)
-			{
 				mode=svdmd;
-			}
 			else
 				mode=NOT_SAVED;
 			break;
