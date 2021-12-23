@@ -160,6 +160,8 @@ void get_input(struct Window *w, struct Cursor *c, struct File *f)
 			f->saved=false;
 			break;
 		case KEY_RESIZE:
+			if (c->y>(w->top+w->height))
+				w->top+=c->y-(w->top+w->height)+1;
 			break;
 		default:
 			ins_char(c->abs, (char) k, w->contents);

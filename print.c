@@ -83,13 +83,13 @@ void content_line_print(int r, struct Window *w, struct Cursor *c)
 void print_contents(struct Window *w, struct Cursor *c, struct File *f)
 //Used to print all of the regular editor contents
 {
-    int i=0;
-    while (i<w->height-2)
-    {
-        content_line_print(i, w, c);
-        i++;
-    }
-    move(c->y-w->top+1, c->x%w->width);
+	int i=0;
+	while (i<w->height-2)
+	{
+		content_line_print(i, w, c);
+		i++;
+	}
+	move(c->y-w->top+1, c->x%w->width);
 }
 
 bool msg_box(struct Window *w, char *msg)
